@@ -1,12 +1,13 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DAL.User
 {
     public class UserService
     {
-        private readonly CarNumberContext userContext;
+        private readonly CarAppContext userContext;
 
-        public UserService(CarNumberContext context)
+        public UserService(CarAppContext context)
         {
             userContext = context;
         }
@@ -18,7 +19,7 @@ namespace DAL.User
 
         public Models.User.User GetUserByEmail(string email)
         {
-            return userContext.Users.FirstOrDefault(user => user.Email == email);
+            return userContext.Users.Include(user => user.AuthInfo).FirstOrDefault(user => user.Email == email);
         }
 
         public bool IsUserWithEmailExists(string email)

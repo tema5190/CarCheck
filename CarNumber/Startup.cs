@@ -41,6 +41,13 @@ namespace CarNumber
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(x => 
+               x.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+            );
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

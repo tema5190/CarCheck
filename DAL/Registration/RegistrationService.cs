@@ -9,11 +9,11 @@ namespace DAL.Registration
 {
     public class RegistrationService
     {
-        private readonly CarNumberContext carNumberContext;
+        private readonly CarAppContext carNumberContext;
         private readonly UserService userService;
         private readonly MailService mailService;
 
-        public RegistrationService(CarNumberContext carNumberContext, UserService userService, MailService mailService)
+        public RegistrationService(CarAppContext carNumberContext, UserService userService, MailService mailService)
         {
             this.carNumberContext = carNumberContext;
             this.userService = userService;

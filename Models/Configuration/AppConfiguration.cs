@@ -4,5 +4,7 @@
     {
         public string BaseApiUrl { get; set; }
         public string BaseFrontUrl { get; set; }
+
+        public string Secret { get; set; }
     }
 }

@@ -1,33 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DAL.CarIdCard;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.CarInfo;
 using Models.Grabber;
 
 namespace CarNumber.Controllers
 {
-    [Route("api/caridcard")]
+    [Route("api/car")]
     [ApiController]
+    [Authorize]
     public class CarIdCardController : ControllerBase
     {
-        private readonly CarIdCardService carIdCardService;
+        private readonly CarService carService;
 
-        public CarIdCardController(CarIdCardService carIdCardService) {
-            this.carIdCardService = carIdCardService;
+        public CarIdCardController(CarService carIdCardService) {
+            this.carService = carIdCardService;
         }
 
-        [HttpGet("ping")]
-        public string Ping()
+        [HttpPost("car")]
+        public void AddCarCardId(CarIdCardData carIdCardInfo)
         {
-            return "pong";
+            var userId = int.Parse(this.User.Identity.Name);
+            carService.AddCarCardId(userId, carIdCardInfo);
         }
 
-        [HttpGet("carIdCardData")]
-        public IEnumerable<PenaltyRecord> GetPenaltyRecords([FromBody]CarIdCardData carIdCardData)
+        [HttpGet("car/{carid}")]
+        public IEnumerable<PenaltyRecord> GetCarPenaltyRecords(int carId)
         {
-            var result = carIdCardService.GetPenaltyRecords(carIdCardData);
+            var userId = int.Parse(this.User.Identity.Name);
+            var result = carService.GetCarPenaltyRecords(userId, carId);
             return result;
         }
     }

@@ -1,10 +1,12 @@
 ﻿using DAL.Registration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.User;
 
 namespace CarNumber.Controllers
 {
     [Route("api/registration")]
+    [AllowAnonymous]
     [ApiController]
     public class RegistrationController : ControllerBase
     {
@@ -25,12 +27,6 @@ namespace CarNumber.Controllers
             }
 
             return BadRequest("Error");
-        }
-
-        [HttpGet("user/{id}")]
-        public User GetUserById(int id)
-        {
-            return registrationService.GetUserById(id);
         }
 
         [HttpGet("confirm-email/{hash1}/{hash2}")]

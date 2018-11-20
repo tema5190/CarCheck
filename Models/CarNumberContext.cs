@@ -4,9 +4,9 @@ using Models.User;
 
 namespace DAL
 {
-    public class CarNumberContext: DbContext
+    public class CarAppContext: DbContext
     {
-        public CarNumberContext(DbContextOptions<CarNumberContext> options)
+        public CarAppContext(DbContextOptions<CarAppContext> options)
             : base(options)
         { }
 

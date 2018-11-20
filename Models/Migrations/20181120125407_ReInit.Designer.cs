@@ -4,14 +4,16 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Models.Migrations
 {
-    [DbContext(typeof(CarNumberContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(CarAppContext))]
+    [Migration("20181120125407_ReInit")]
+    partial class ReInit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,11 +31,16 @@ namespace Models.Migrations
 
                     b.Property<string>("CertificateSeries");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("FullName");
 
                     b.HasKey("Id");
 
                     b.ToTable("CarIdCardData");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("CarIdCardData");
                 });
 
             modelBuilder.Entity("Models.CarInfo.UserCar", b =>
@@ -110,6 +117,23 @@ namespace Models.Migrations
                     b.ToTable("UserAuthInfo");
                 });
 
+            modelBuilder.Entity("Models.Grabber.PenaltyRecord", b =>
+                {
+                    b.HasBaseType("Models.CarInfo.CarIdCardData");
+
+                    b.Property<DateTime>("PenaltyDataTime");
+
+                    b.Property<string>("PenaltyNumber");
+
+                    b.Property<int?>("UserCarId");
+
+                    b.HasIndex("UserCarId");
+
+                    b.ToTable("PenaltyRecord");
+
+                    b.HasDiscriminator().HasValue("PenaltyRecord");
+                });
+
             modelBuilder.Entity("Models.CarInfo.UserCar", b =>
                 {
                     b.HasOne("Models.CarInfo.CarIdCardData", "CarIdCardData")
@@ -126,6 +150,13 @@ namespace Models.Migrations
                     b.HasOne("Models.User.UserAuthInfo", "AuthInfo")
                         .WithMany()
                         .HasForeignKey("AuthInfoId");
+                });
+
+            modelBuilder.Entity("Models.Grabber.PenaltyRecord", b =>
+                {
+                    b.HasOne("Models.CarInfo.UserCar")
+                        .WithMany("PenaltyRecords")
+                        .HasForeignKey("UserCarId");
                 });
 #pragma warning restore 612, 618
         }
