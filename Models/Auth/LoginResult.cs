@@ -2,10 +2,10 @@
 
 namespace Models.Auth
 {
-    public class AuthResult
+    public class LoginResult
     {
         public bool IsSuccess { get; set; } = false;
-        public string Error { get; set; }
+        public string ErrorMessage { get; set; }
         public string JwtToken { get; set; } = null;
     }
 }

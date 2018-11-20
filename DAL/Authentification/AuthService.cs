@@ -24,14 +24,14 @@ namespace Services.Authentification
             appConfiguration = configuration.Value;
         }
 
-        public AuthResult Authentificate(AuthModel authModel)
+        public LoginResult Authentificate(LoginModel authModel)
         {
             var user = userService.GetUserByEmail(authModel.Email);
             if (user == null || !IsPasswordValid(authModel.Password, user.AuthInfo))
             {
-                return new AuthResult()
+                return new LoginResult()
                 {
-                    Error = "Email or password isn't valid",
+                    ErrorMessage = "Email or password isn't valid",
                 };
             } else
             {
@@ -48,7 +48,7 @@ namespace Services.Authentification
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return new AuthResult()
+                return new LoginResult()
                 {
                     IsSuccess = true,
                     JwtToken = tokenHandler.WriteToken(token),

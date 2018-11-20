@@ -19,37 +19,38 @@ namespace DAL.CarIdCard
 
         public void AddCarCardId(int userId, CarIdCardData carIdCardData)
         {
-            var user = this.context.Users.Include(u => u.UserCars).First(u => u.Id == userId);
-
             var newCar = new UserCar()
             {
+                UserId = userId,
                 CarIdCardData = carIdCardData,
                 Name = "",
-                PenaltyRecords = new List<PenaltyRecord>()
             };
 
-            // TODO: Update id without 2 big request to DB
-            user.UserCars.Add(newCar);
+            context.Cars.Add(newCar);
             context.SaveChanges();
+            // TODO: Update db in one time without 2 records
+            //context.Entry(newCar).GetDatabaseValues();
 
-            newCar.PenaltyRecords = GetRemotePenaltyRecords(userId, newCar.Id);
+            var initCarRecords = GetRemotePenaltyRecords(userId, newCar.Id);
+            context.PenaltyRecords.AddRange(initCarRecords);
             context.SaveChanges();
         }
 
         public List<PenaltyRecord> GetCarPenaltyRecords(int userId, int carId)
         {
-            var user = context.Users.Include(u => u.UserCars).ThenInclude(c => c.PenaltyRecords).First(u => u.Id == userId);
-            return user.UserCars.First(car => car.Id == carId).PenaltyRecords.ToList();
+            // TODO: Load not own car records protect problem?
+            var records = context.PenaltyRecords.Where(record => record.CarId == carId).ToList();
+            return records;
         }
 
         private List<PenaltyRecord> GetRemotePenaltyRecords(int userId, int carId)
         {
-            var user = context.Users.Include(u => u.UserCars).First(u => u.Id == userId);
-            var car = user.UserCars.First(c => c.Id == carId);
+            // TODO: Load not own car records protect problem?
+            var car = context.Cars.First(c => c.Id == carId);
             var grabber = new MVDGrabber();
             var rawResult = grabber.GetRawData(car.CarIdCardData);
             var parsed = new ResultParser();
-            return parsed.ParseResult(rawResult);
+            return parsed.ParseResult(rawResult, carId);
         } 
     }
 }

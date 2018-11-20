@@ -11,22 +11,22 @@ namespace CarNumber.Controllers
     [Route("api/car")]
     [ApiController]
     [Authorize]
-    public class CarIdCardController : ControllerBase
+    public class CarController : ControllerBase
     {
         private readonly CarService carService;
 
-        public CarIdCardController(CarService carIdCardService) {
-            this.carService = carIdCardService;
+        public CarController(CarService carIdCardService) {
+            carService = carIdCardService;
         }
 
-        [HttpPost("car")]
+        [HttpPost("")]
         public void AddCarCardId(CarIdCardData carIdCardInfo)
         {
             var userId = int.Parse(this.User.Identity.Name);
             carService.AddCarCardId(userId, carIdCardInfo);
         }
 
-        [HttpGet("car/{carid}")]
+        [HttpGet("{carId}")]
         public IEnumerable<PenaltyRecord> GetCarPenaltyRecords(int carId)
         {
             var userId = int.Parse(this.User.Identity.Name);

@@ -31,7 +31,6 @@ namespace DAL.Registration
             {
                 Email = registrationModel.Email,
                 AuthInfo = HashHelper.GetNewUserAuthInfo(registrationModel.Password),
-                UserCars = new System.Collections.Generic.List<Models.CarInfo.UserCar>()
             };
 
             carNumberContext.Users.Add(user);

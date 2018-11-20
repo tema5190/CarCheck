@@ -9,6 +9,21 @@ namespace Models.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CarIdCardData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FullName = table.Column<string>(nullable: true),
+                    CertificateSeries = table.Column<string>(nullable: true),
+                    CertificateNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarIdCardData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ConfirmationModels",
                 columns: table => new
                 {
@@ -25,6 +40,21 @@ namespace Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PenaltyRecords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CarId = table.Column<int>(nullable: false),
+                    PenaltyDataTime = table.Column<DateTime>(nullable: false),
+                    PenaltyNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PenaltyRecords", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAuthInfo",
                 columns: table => new
                 {
@@ -36,6 +66,27 @@ namespace Models.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserAuthInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    CarIdCardDataId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_CarIdCardData_CarIdCardDataId",
+                        column: x => x.CarIdCardDataId,
+                        principalTable: "CarIdCardData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,98 +110,33 @@ namespace Models.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserCar",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    CarIdCardDataId = table.Column<int>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserCar", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserCar_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CarIdCardData",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    FullName = table.Column<string>(nullable: true),
-                    CertificateSeries = table.Column<string>(nullable: true),
-                    CertificateNumber = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    PenaltyDataTime = table.Column<DateTime>(nullable: true),
-                    PenaltyNumber = table.Column<string>(nullable: true),
-                    UserCarId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarIdCardData", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CarIdCardData_UserCar_UserCarId",
-                        column: x => x.UserCarId,
-                        principalTable: "UserCar",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_CarIdCardData_UserCarId",
-                table: "CarIdCardData",
-                column: "UserCarId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserCar_CarIdCardDataId",
-                table: "UserCar",
+                name: "IX_Cars_CarIdCardDataId",
+                table: "Cars",
                 column: "CarIdCardDataId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserCar_UserId",
-                table: "UserCar",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_AuthInfoId",
                 table: "Users",
                 column: "AuthInfoId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserCar_CarIdCardData_CarIdCardDataId",
-                table: "UserCar",
-                column: "CarIdCardDataId",
-                principalTable: "CarIdCardData",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_CarIdCardData_UserCar_UserCarId",
-                table: "CarIdCardData");
+            migrationBuilder.DropTable(
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "ConfirmationModels");
 
             migrationBuilder.DropTable(
-                name: "UserCar");
-
-            migrationBuilder.DropTable(
-                name: "CarIdCardData");
+                name: "PenaltyRecords");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "CarIdCardData");
 
             migrationBuilder.DropTable(
                 name: "UserAuthInfo");

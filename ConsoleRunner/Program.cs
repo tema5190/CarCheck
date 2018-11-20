@@ -31,7 +31,7 @@ namespace ConsoleRunner
 
             var parsed = new ResultParser();
 
-            var parsedItems = parsed.ParseResult(rawResult);
+            var parsedItems = parsed.ParseResult(rawResult, 1);
 
             Console.WriteLine($"{data.FullName} {data.CertificateSeries}{data.CertificateNumber}");
 

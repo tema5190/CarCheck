@@ -9,16 +9,16 @@ namespace CarNumber.Controllers
     [Route("api/auth")]
     [ApiController]
     [AllowAnonymous]
-    public class AuthController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly AuthService authService;
-        public AuthController(AuthService authService)
+        public LoginController(AuthService authService)
         {
             this.authService = authService;
         }
 
         [HttpPost("authentificate")]
-        public AuthResult Authentificate(AuthModel authModel)
+        public LoginResult Authentificate(LoginModel authModel)
         {
             return authService.Authentificate(authModel);
         }

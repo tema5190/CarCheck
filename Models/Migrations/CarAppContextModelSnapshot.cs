@@ -29,16 +29,11 @@ namespace Models.Migrations
 
                     b.Property<string>("CertificateSeries");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<string>("FullName");
 
                     b.HasKey("Id");
 
                     b.ToTable("CarIdCardData");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("CarIdCardData");
                 });
 
             modelBuilder.Entity("Models.CarInfo.UserCar", b =>
@@ -51,15 +46,30 @@ namespace Models.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarIdCardDataId");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("Cars");
+                });
 
-                    b.ToTable("UserCar");
+            modelBuilder.Entity("Models.Grabber.PenaltyRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CarId");
+
+                    b.Property<DateTime>("PenaltyDataTime");
+
+                    b.Property<string>("PenaltyNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PenaltyRecords");
                 });
 
             modelBuilder.Entity("Models.Mail.ConfirmationModel", b =>
@@ -115,32 +125,11 @@ namespace Models.Migrations
                     b.ToTable("UserAuthInfo");
                 });
 
-            modelBuilder.Entity("Models.Grabber.PenaltyRecord", b =>
-                {
-                    b.HasBaseType("Models.CarInfo.CarIdCardData");
-
-                    b.Property<DateTime>("PenaltyDataTime");
-
-                    b.Property<string>("PenaltyNumber");
-
-                    b.Property<int?>("UserCarId");
-
-                    b.HasIndex("UserCarId");
-
-                    b.ToTable("PenaltyRecord");
-
-                    b.HasDiscriminator().HasValue("PenaltyRecord");
-                });
-
             modelBuilder.Entity("Models.CarInfo.UserCar", b =>
                 {
                     b.HasOne("Models.CarInfo.CarIdCardData", "CarIdCardData")
                         .WithMany()
                         .HasForeignKey("CarIdCardDataId");
-
-                    b.HasOne("Models.User.User")
-                        .WithMany("UserCars")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Models.User.User", b =>
@@ -148,13 +137,6 @@ namespace Models.Migrations
                     b.HasOne("Models.User.UserAuthInfo", "AuthInfo")
                         .WithMany()
                         .HasForeignKey("AuthInfoId");
-                });
-
-            modelBuilder.Entity("Models.Grabber.PenaltyRecord", b =>
-                {
-                    b.HasOne("Models.CarInfo.UserCar")
-                        .WithMany("PenaltyRecords")
-                        .HasForeignKey("UserCarId");
                 });
 #pragma warning restore 612, 618
         }

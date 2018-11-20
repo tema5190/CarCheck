@@ -9,6 +9,5 @@ namespace Models.User
         public string Email { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public UserAuthInfo AuthInfo { get; set; }
-        public List<UserCar> UserCars { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Parser
         private const string leftBracket = "u003c";
         private const string rightBracket = "u003e";
 
-        public List<PenaltyRecord> ParseResult(string rawResult)
+        public List<PenaltyRecord> ParseResult(string rawResult, int carId)
         {
             List<PenaltyRecord> result = new List<PenaltyRecord>();
 
@@ -39,11 +39,12 @@ namespace Parser
                 fields = fields.Where(item => item != "").ToArray();
                 var model = new PenaltyRecord()
                 {
-                    FullName = fields[0],
-                    CertificateSeries = fields[1],
-                    CertificateNumber = fields[2],
+                    //FullName = fields[0],
+                    //CertificateSeries = fields[1],
+                    //CertificateNumber = fields[2],
                     PenaltyDataTime = DateTime.Parse(fields[3]),
                     PenaltyNumber = fields[4],
+                    CarId = carId,
                 };
                 result.Add(model);
             }
