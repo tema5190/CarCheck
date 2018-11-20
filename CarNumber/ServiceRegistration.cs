@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using CarNumber.Configuration;
+using DAL;
 using DAL.CarIdCard;
 using DAL.Registration;
 using DAL.User;
@@ -13,11 +14,18 @@ namespace CarNumber
     {
         public static void RegisterCarNumberServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<UserContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CarNumberContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<CarIdCardService>();
             services.AddTransient<RegistrationService>();
             services.AddTransient<UserService>();
             services.AddScoped<MailService>();
+
+            //var t = new AppConfiguration();
+            //var section = configuration.GetSection("AppConfiguration");
+            //var t2 = section.GetValue<string>("BaseApiUrl");
+            //section.Bind(t);
+            //services.AddOptions();
+            services.Configure<AppConfiguration>(configuration.GetSection("AppConfiguration"));
         }
     }
 }

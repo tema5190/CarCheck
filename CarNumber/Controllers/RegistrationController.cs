@@ -32,5 +32,18 @@ namespace CarNumber.Controllers
         {
             return registrationService.GetUserById(id);
         }
+
+        [HttpGet("confirm-email/{hash1}/{hash2}")]
+        public ActionResult ConfirmUserEmail(string hash1, string hash2)
+        {
+            if (registrationService.ConfirmEmail(hash1, hash2))
+            {
+                return Ok("Email confirmed");
+            }
+            else
+            {
+                return BadRequest("Something went wrong");
+            };
+        }
     }
 }

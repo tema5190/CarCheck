@@ -8,9 +8,9 @@ namespace DAL.CarIdCard
 {
     public class CarIdCardService
     {
-        private readonly UserContext userContext;
+        private readonly CarNumberContext userContext;
 
-        public CarIdCardService(UserContext context)
+        public CarIdCardService(CarNumberContext context)
         {
             userContext = context;
         }

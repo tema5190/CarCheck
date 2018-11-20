@@ -4,9 +4,9 @@ namespace DAL.User
 {
     public class UserService
     {
-        private readonly UserContext userContext;
+        private readonly CarNumberContext userContext;
 
-        public UserService(UserContext context)
+        public UserService(CarNumberContext context)
         {
             userContext = context;
         }

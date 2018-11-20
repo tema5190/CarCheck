@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Models.Migrations
 {
-    [DbContext(typeof(UserContext))]
+    [DbContext(typeof(CarNumberContext))]
     [Migration("20181120071435_ReInit")]
     partial class ReInit
     {
