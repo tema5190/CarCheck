@@ -6,17 +6,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginModule } from './components/login/login.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardModule } from './components/dashboard/dashboard.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    BrowserModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserModule,
     AppRoutingModule,
     LoginModule,
+    DashboardModule,
     SharedModule,
   ],
   providers: [],

@@ -29,7 +29,6 @@ export class AuthService {
     }
 
     public login(loginModel: LoginModel): Observable<LoginResult> {
-
         return this._httpClient.post<LoginResult>(`${AppConstants.API_URL}auth/authentificate`, loginModel).pipe(map(result => {
             if (result.isSuccess) {
                 localStorage.setItem('loginData', JSON.stringify(result));

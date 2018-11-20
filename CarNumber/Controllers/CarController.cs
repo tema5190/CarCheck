@@ -20,10 +20,17 @@ namespace CarNumber.Controllers
         }
 
         [HttpPost("")]
-        public void AddCarCardId(CarIdCardData carIdCardInfo)
+        public UserCar AddNewCar(UserCar newCar)
         {
             var userId = int.Parse(this.User.Identity.Name);
-            carService.AddCarCardId(userId, carIdCardInfo);
+            return carService.AddCarCardId(userId, newCar);
+        }
+
+        [HttpGet("")]
+        public IEnumerable<UserCar> GetUserCars()
+        {
+            var userId = int.Parse(this.User.Identity.Name);
+            return carService.GetUserCars(userId);
         }
 
         [HttpGet("{carId}")]

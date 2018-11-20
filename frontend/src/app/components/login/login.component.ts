@@ -1,3 +1,4 @@
+import { LoginResult } from './../../models/login/login.models';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Component } from '@angular/core';
 import { LoginModel } from 'src/app/models/login/login.models';
@@ -21,7 +22,10 @@ export class LoginComponent {
         const loginModel = new LoginModel();
         loginModel.email = this.email;
         loginModel.password = this.password;
-        this._authService.login(loginModel);
-        this.router.navigate(['/dashboard']);
+        this._authService.login(loginModel).subscribe((loginResult: LoginResult) => {
+            if (loginResult.isSuccess) {
+                this.router.navigate(['/dashboard']);
+            }
+        });
     }
 }

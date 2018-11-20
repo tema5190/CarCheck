@@ -6,5 +6,6 @@
         public int UserId { get; set; }
         public string Name { get; set; }
         public CarIdCardData CarIdCardData { get; set; }
+        public int? PenaltyCount { get; set; }
     }
 }

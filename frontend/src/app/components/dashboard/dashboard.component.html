@@ -1,0 +1,22 @@
+<div class="dashboard-container">
+    <app-car-list [carItems]="carItems"></app-car-list>
+    <div class="new-car-form-container">
+        <h4>Add new car</h4>
+        <div class="new-car-form">
+            <label>Car name</label>
+            <input [(ngModel)]="carName" />
+            <label>First Name</label>
+            <input [(ngModel)]="firstName" />
+            <label>Second Name</label>
+            <input [(ngModel)]="secondName" />
+            <label>Last Name</label>
+            <input [(ngModel)]="thirdName" />
+            <label>Car's sertification series</label>
+            <input [(ngModel)]="carIdCardSeries" />
+            <label>Car's sertification number</label>
+            <input [(ngModel)]="carIdCardNumber" />
+            <button (click)="addNewCar()">Add car</button>
+        </div>
+    </div>
+    <div>selected item main info // new car form</div>
+</div>

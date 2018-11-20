@@ -17,23 +17,25 @@ namespace DAL.CarIdCard
             this.context = context;
         }
 
-        public void AddCarCardId(int userId, CarIdCardData carIdCardData)
+        public UserCar AddCarCardId(int userId, UserCar newCar)
         {
-            var newCar = new UserCar()
-            {
-                UserId = userId,
-                CarIdCardData = carIdCardData,
-                Name = "",
-            };
-
+            newCar.UserId = userId;
             context.Cars.Add(newCar);
             context.SaveChanges();
+
             // TODO: Update db in one time without 2 records
             //context.Entry(newCar).GetDatabaseValues();
 
             var initCarRecords = GetRemotePenaltyRecords(userId, newCar.Id);
+            newCar.PenaltyCount = initCarRecords.Count;
             context.PenaltyRecords.AddRange(initCarRecords);
             context.SaveChanges();
+            return newCar;
+        }
+
+        public List<UserCar> GetUserCars(int userId)
+        {
+            return context.Cars.Where(car => car.UserId == userId).ToList();
         }
 
         public List<PenaltyRecord> GetCarPenaltyRecords(int userId, int carId)
