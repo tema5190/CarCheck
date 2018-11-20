@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Models;
+using Models.Grabber;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Parser
         private const string leftBracket = "u003c";
         private const string rightBracket = "u003e";
 
-        public List<PenaltyResult> ParseResult(string rawResult)
+        public List<PenaltyRecord> ParseResult(string rawResult)
         {
-            List<PenaltyResult> result = new List<PenaltyResult>();
+            List<PenaltyRecord> result = new List<PenaltyRecord>();
 
             if(rawResult.Contains("По заданным критериям поиска информация не найдена"))
             {
@@ -21,9 +22,6 @@ namespace Parser
             }
 
             var htmlDoc = new HtmlDocument();
-
-            //var parsedResult = rawResult.Replace(@"\","").Replace("rn","").Replace("\\\"","").Replace("\"\"", "").Replace(leftBracket, "<").Replace(rightBracket, ">");
-
             var parsedResult = rawResult.Replace("\\", "").Replace("\"\"", "").Replace(leftBracket, "<").Replace(rightBracket, ">").Replace("rn", "");
             parsedResult = @"<!DOCTYPE html>
                                 <html>
@@ -39,7 +37,7 @@ namespace Parser
             {
                 var fields = tableBody[i].InnerText.Split("  ");
                 fields = fields.Where(item => item != "").ToArray();
-                var model = new PenaltyResult()
+                var model = new PenaltyRecord()
                 {
                     FullName = fields[0],
                     CertificateSeries = fields[1],

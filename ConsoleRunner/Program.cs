@@ -1,5 +1,5 @@
 ﻿using Grabber;
-using Models;
+using Models.CarInfo;
 using Parser;
 using System;
 
@@ -10,7 +10,7 @@ namespace ConsoleRunner
         public static void Main(string[] args)
         {
             var grabber = new MVDGrabber();
-            var data = new UserCarData()
+            var data = new CarIdCardData()
             {
                 FullName = "ДАКУКО ЕКАТЕРИНА МИХАЙЛОВНА",
                 CertificateSeries = "МАА",
